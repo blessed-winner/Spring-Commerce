@@ -1,5 +1,12 @@
 package com.xenon.store.controllers;
 
-public class MessageController {
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
+public class MessageController {
+    @RequestMapping("/hello")
+    public String sayHello(){
+         return "Hello World";
+    }
 }
