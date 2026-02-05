@@ -1,5 +1,6 @@
 package com.xenon.store.controllers;
 
+import com.xenon.store.dto.RegisterUserRequest;
 import com.xenon.store.dto.UserDto;
 import com.xenon.store.mappers.UserMapper;
 import com.xenon.store.repositories.UserRepository;
@@ -36,7 +37,8 @@ public class UserController {
        return ResponseEntity.ok(userMapper.toDto(user));
     }
 
-    public UserDto createUser(@RequestBody UserDto data){
-         return data;
+    @PostMapping
+    public UserDto createUser(@RequestBody RegisterUserRequest request){
+         return null;
     }
 }
