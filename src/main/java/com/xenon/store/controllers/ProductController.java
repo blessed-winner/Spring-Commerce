@@ -6,11 +6,11 @@ import com.xenon.store.mappers.ProductMapper;
 import com.xenon.store.repositories.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.Response;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RestController
 @AllArgsConstructor
@@ -20,8 +20,8 @@ public class ProductController {
     private final ProductMapper productMapper;
 
     @GetMapping
-    public Iterable<ProductDto>getAllProducts(){
-        return productRepository.findAll()
+    public Iterable<ProductDto>getAllProducts(@RequestParam(defaultValue = "",name = "categoryId",required = false) String categoryId){
+        return productRepository.findAll(Sort.by(categoryId))
                                 .stream()
                                 .map(productMapper::toDto)
                                 .toList();
