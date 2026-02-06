@@ -1,14 +1,18 @@
 package com.xenon.store.controllers;
 
 import com.xenon.store.dto.ProductDto;
+import com.xenon.store.entities.Category;
 import com.xenon.store.entities.Product;
 import com.xenon.store.mappers.ProductMapper;
+import com.xenon.store.repositories.CategoryRepository;
 import com.xenon.store.repositories.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Set;
@@ -19,6 +23,7 @@ import java.util.Set;
 public class ProductController {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
+    private final CategoryRepository categoryRepository;
 
     @GetMapping
     public Iterable<ProductDto>getAllProducts(@RequestParam(required = false) Byte categoryId){
@@ -49,7 +54,11 @@ public class ProductController {
             @RequestBody ProductDto productDto,
             UriComponentsBuilder uriBuilder
     ){
+        Category category = categoryRepository.findById(productDto.getCategory_id())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"Category not found"));
         var product = productMapper.toEntity(productDto);
+        product.setCategory(category);
+
         productRepository.save(product);
 
         var productCreateRequest = productMapper.toDto(product);
