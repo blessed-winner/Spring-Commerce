@@ -1,6 +1,7 @@
 package com.xenon.store.controllers;
 
 import com.xenon.store.dto.RegisterUserRequest;
+import com.xenon.store.dto.UpdateUserRequest;
 import com.xenon.store.dto.UserDto;
 import com.xenon.store.mappers.UserMapper;
 import com.xenon.store.repositories.UserRepository;
@@ -50,5 +51,21 @@ public class UserController {
          var uri = uriBuilder.path("/users/{id}").buildAndExpand(userDto.getId()).toUri();
 
          return ResponseEntity.created(uri).body(userDto);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDto> updateUser(
+            @PathVariable(name = "id") Long id,
+            @RequestBody UpdateUserRequest request
+            ){
+        var user = userRepository.findById(id).orElse(null);
+        if(user == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        userRepository.save(user);
+        userMapper.update(request,user);
+
+        return ResponseEntity.ok(userMapper.toDto(user));
     }
 }
