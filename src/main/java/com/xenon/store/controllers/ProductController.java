@@ -1,6 +1,7 @@
 package com.xenon.store.controllers;
 
 import com.xenon.store.dto.ProductDto;
+import com.xenon.store.dto.UpdateProductRequest;
 import com.xenon.store.entities.Category;
 import com.xenon.store.entities.Product;
 import com.xenon.store.mappers.ProductMapper;
@@ -67,5 +68,32 @@ public class ProductController {
 
         return ResponseEntity.created(uri).body(productCreateRequest);
 
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductDto>updateProduct(
+            @PathVariable(name = "id") Long id,
+            @RequestBody UpdateProductRequest request
+    ){
+       var product = productRepository.findById(id).orElse(null);
+       if(product == null){
+           return ResponseEntity.notFound().build();
+       }
+
+      productMapper.update(request,product);
+      productRepository.save(product);
+
+      return ResponseEntity.ok(productMapper.toDto(product));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id){
+        var user = productRepository.findById(id).orElse(null);
+        if(user == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        productRepository.delete(user);
+        return ResponseEntity.noContent().build();
     }
 }
