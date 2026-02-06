@@ -9,6 +9,7 @@ import org.apache.coyote.Response;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Set;
 
@@ -41,5 +42,21 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(productMapper.toDto(product));
+    }
+
+    @PostMapping
+    public ResponseEntity<ProductDto> createProduct(
+            @RequestBody ProductDto productDto,
+            UriComponentsBuilder uriBuilder
+    ){
+        var product = productMapper.toEntity(productDto);
+        productRepository.save(product);
+
+        var productCreateRequest = productMapper.toDto(product);
+
+        var uri = uriBuilder.path("/products/{id}").buildAndExpand(product.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(productCreateRequest);
+
     }
 }
