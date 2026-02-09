@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.LocalDateTime;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/carts")
@@ -24,6 +26,8 @@ public class CartController {
     public ResponseEntity<CartDto> createCart(
             @Valid @RequestBody CartDto dto,
             UriComponentsBuilder uriBuilder) {
+
+        dto.setCreatedAt(LocalDateTime.now());
 
         Cart saved = cartRepository.save(cartMapper.toEntity(dto));
         CartDto result = cartMapper.toDto(saved);
