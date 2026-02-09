@@ -24,5 +24,4 @@ public class Cart {
 
     @OneToMany(mappedBy = "cart")
     private Set<CartItem> cartItems = new LinkedHashSet<>();
-
 }
