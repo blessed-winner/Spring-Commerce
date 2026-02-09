@@ -1,31 +1,35 @@
 package com.xenon.store.controllers;
 
 import com.xenon.store.dto.CartDto;
+import com.xenon.store.entities.Cart;
 import com.xenon.store.mappers.CartMapper;
 import com.xenon.store.repositories.CartRepository;
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-@RestController("/carts")
+@RestController
+@AllArgsConstructor
+@RequestMapping("/carts")
 public class CartController {
   private CartRepository cartRepository;
   private CartMapper cartMapper;
 
-  @PostMapping
+    @PostMapping
     public ResponseEntity<CartDto> createCart(
-            @RequestBody CartDto cartDto,
-            UriComponentsBuilder uriBuilder
-  ){
-     var cart = cartMapper.toEntity(cartDto);
-     cartRepository.save(cart);
+            @Valid @RequestBody CartDto dto,
+            UriComponentsBuilder uriBuilder) {
 
-     var cartCreateRequest = cartMapper.toDto(cart);
-     var uri = uriBuilder.path("/carts/{id}").buildAndExpand(cartCreateRequest.getId()).toUri();
+        Cart saved = cartRepository.save(cartMapper.toEntity(dto));
+        CartDto result = cartMapper.toDto(saved);
 
-     return ResponseEntity.created(uri).body(cartCreateRequest);
-
-  }
+        return ResponseEntity.created(
+                uriBuilder.path("/carts/{id}").buildAndExpand(saved.getId()).toUri()
+        ).body(result);
+    }
 }
