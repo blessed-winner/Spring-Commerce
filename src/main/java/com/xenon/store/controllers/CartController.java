@@ -24,12 +24,9 @@ public class CartController {
 
     @PostMapping
     public ResponseEntity<CartDto> createCart(
-            @Valid @RequestBody CartDto dto,
             UriComponentsBuilder uriBuilder) {
 
-        dto.setCreatedAt(LocalDateTime.now());
-
-        Cart saved = cartRepository.save(cartMapper.toEntity(dto));
+        Cart saved = cartRepository.save(new Cart());
         CartDto result = cartMapper.toDto(saved);
 
         return ResponseEntity.created(

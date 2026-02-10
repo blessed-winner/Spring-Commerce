@@ -3,6 +3,7 @@ package com.xenon.store.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -17,6 +18,7 @@ public class Cart {
     @Column(name = "id")
     private UUID id;
 
+    @CreationTimestamp
     @Column(name = "created_at", insertable = false,updatable = false)
     private LocalDateTime createdAt;
 
