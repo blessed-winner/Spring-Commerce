@@ -3,14 +3,13 @@ package com.xenon.store.dto;
 import com.xenon.store.entities.CartItem;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 public class CartDto {
     private UUID id;
-    private LocalDateTime createdAt;
-    private Set<CartItem> items = new LinkedHashSet<>();
+    private List<CartItem> items = new ArrayList<>();
+    private BigDecimal totalPrice = BigDecimal.ZERO;
 }
