@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -35,5 +35,5 @@ public class Product {
 
     @OneToMany(mappedBy = "product")
     @Column(name = "cart_items")
-    private Set<CartItem> cartItems = new LinkedHashSet<>();
+    private List<CartItem> cartItems = new ArrayList<>();
 }

@@ -1,19 +1,20 @@
 package com.xenon.store.controllers;
 
+import com.xenon.store.dto.AddItemToCartRequest;
 import com.xenon.store.dto.CartDto;
+import com.xenon.store.dto.CartItemDto;
 import com.xenon.store.entities.Cart;
+import com.xenon.store.entities.CartItem;
 import com.xenon.store.mappers.CartMapper;
 import com.xenon.store.repositories.CartRepository;
-import jakarta.validation.Valid;
+import com.xenon.store.repositories.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.time.LocalDateTime;
+import java.util.UUID;
+
 
 @RestController
 @AllArgsConstructor
@@ -21,10 +22,11 @@ import java.time.LocalDateTime;
 public class CartController {
   private CartRepository cartRepository;
   private CartMapper cartMapper;
+  private ProductRepository productRepository;
 
     @PostMapping
     public ResponseEntity<CartDto> createCart(
-            UriComponentsBuilder uriBuilder) {
+            UriComponentsBuilder uriBuilder){
 
         Cart saved = cartRepository.save(new Cart());
         CartDto result = cartMapper.toDto(saved);
@@ -32,5 +34,39 @@ public class CartController {
         return ResponseEntity.created(
                 uriBuilder.path("/carts/{id}").buildAndExpand(saved.getId()).toUri()
         ).body(result);
+    }
+
+    @PostMapping("/{cartId}/items")
+    public ResponseEntity<CartItemDto> addToCart(
+            @PathVariable UUID cartId,
+            @RequestBody AddItemToCartRequest request
+            ){
+          var cart = cartRepository.findById(cartId).orElse(null);
+          if(cart == null){
+              return ResponseEntity.notFound().build();
+          }
+
+          var product = productRepository.findById(request.getProductId()).orElse(null);
+          if(product == null){
+              return ResponseEntity.badRequest().build();
+          }
+
+          var existingItem = cart.getCartItems().stream().filter(item -> item.getProduct().getId().equals(product.getId()))
+                  .findFirst().orElse(null);
+
+          CartItem cartItem;
+          if(existingItem != null){
+              existingItem.setQuantity(existingItem.getQuantity() + 1);
+              cartItem = existingItem;
+          } else {
+              cartItem = new CartItem();
+              cartItem.setProduct(product);
+              cartItem.setQuantity(1);
+              cart.getCartItems().add(cartItem);
+          }
+
+          cartRepository.save(cart);
+
+          return ResponseEntity.ok(null);
     }
 }
