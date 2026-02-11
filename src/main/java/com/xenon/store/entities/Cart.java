@@ -22,6 +22,6 @@ public class Cart {
     @Column(name = "created_at", insertable = false,updatable = false)
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "cart")
-    private List<CartItem> cartItems = new ArrayList<>();
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.MERGE)
+    private Set<CartItem> cartItems = new LinkedHashSet<>();
 }
