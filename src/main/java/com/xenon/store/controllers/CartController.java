@@ -63,6 +63,7 @@ public class CartController {
               cartItem = new CartItem();
               cartItem.setProduct(product);
               cartItem.setQuantity(1);
+              cartItem.setCart(cart);
               cart.getCartItems().add(cartItem);
           }
 
