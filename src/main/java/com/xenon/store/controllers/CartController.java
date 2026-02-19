@@ -9,6 +9,7 @@ import com.xenon.store.mappers.CartMapper;
 import com.xenon.store.repositories.CartRepository;
 import com.xenon.store.repositories.ProductRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -67,6 +68,6 @@ public class CartController {
 
           cartRepository.save(cart);
 
-          return ResponseEntity.ok(null);
+          return ResponseEntity.status(HttpStatus.CREATED).body(cartMapper.toDto(cartItem));
     }
 }
