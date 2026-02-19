@@ -23,7 +23,7 @@ public class Cart {
     @Column(name = "created_at", insertable = false,updatable = false)
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
     private Set<CartItem> items = new LinkedHashSet<>();
 
     public BigDecimal getTotalPrice(){
