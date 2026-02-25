@@ -37,4 +37,21 @@ public class Cart {
                 .findFirst().orElse(null);
     }
 
+    public CartItem addItem(Product product){
+        var existingItem = getItem(product.getId());
+
+        CartItem cartItem;
+        if (existingItem != null) {
+            existingItem.setQuantity(existingItem.getQuantity() + 1);
+            cartItem = existingItem;
+        } else {
+            cartItem = new CartItem();
+            cartItem.setProduct(product);
+            cartItem.setQuantity(1);
+            cartItem.setCart(this);
+            items.add(cartItem);
+        }
+
+        return cartItem;
+    }
 }

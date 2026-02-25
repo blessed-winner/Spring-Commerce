@@ -55,19 +55,7 @@ public class CartController {
             return ResponseEntity.badRequest().build();
         }
 
-        var existingItem = cart.getItem(product.getId());
-
-        CartItem cartItem;
-        if (existingItem != null) {
-            existingItem.setQuantity(existingItem.getQuantity() + 1);
-            cartItem = existingItem;
-        } else {
-            cartItem = new CartItem();
-            cartItem.setProduct(product);
-            cartItem.setQuantity(1);
-            cartItem.setCart(cart);
-            cart.getItems().add(cartItem);
-        }
+        var cartItem = cart.addItem(product);
 
         cartRepository.save(cart);
 
