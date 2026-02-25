@@ -32,4 +32,9 @@ public class Cart {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    public CartItem getItem(Long productId){
+        return  items.stream().filter(item -> item.getProduct().getId().equals(productId))
+                .findFirst().orElse(null);
+    }
+
 }

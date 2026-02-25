@@ -55,8 +55,7 @@ public class CartController {
             return ResponseEntity.badRequest().build();
         }
 
-        var existingItem = cart.getItems().stream().filter(item -> item.getProduct().getId().equals(product.getId()))
-                .findFirst().orElse(null);
+        var existingItem = cart.getItem(product.getId());
 
         CartItem cartItem;
         if (existingItem != null) {
@@ -96,8 +95,7 @@ public class CartController {
                  Map.of("error","Cart not found")
            );
        }
-        var existingItem = cart.getItems().stream().filter(item -> item.getProduct().getId().equals(productId))
-                .findFirst().orElse(null);
+        var existingItem = cart.getItem(productId);
        if(existingItem == null) {
            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                    Map.of("error", "Product was not found in the cart")
