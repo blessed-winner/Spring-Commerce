@@ -7,6 +7,8 @@ import com.xenon.store.dto.UpdateCartItemRequest;
 import com.xenon.store.exceptions.CartNotFoundException;
 import com.xenon.store.exceptions.ProductNotFoundException;
 import com.xenon.store.services.CartService;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,7 @@ import java.util.UUID;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/carts")
+@Tag(name = "Cart")
 public class CartController {
     private CartService cartService;
 
@@ -36,6 +39,7 @@ public class CartController {
 
     @PostMapping("/{cartId}/items")
     public ResponseEntity<CartItemDto> addToCart(
+            @Parameter(name = "cartID",description = "ID of the cart to which the item will be added")
             @PathVariable UUID cartId,
             @RequestBody AddItemToCartRequest request
     ) {
