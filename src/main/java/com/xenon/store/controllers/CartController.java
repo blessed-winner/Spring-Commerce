@@ -6,6 +6,8 @@ import com.xenon.store.dto.CartItemDto;
 import com.xenon.store.dto.UpdateCartItemRequest;
 import com.xenon.store.entities.Cart;
 import com.xenon.store.entities.CartItem;
+import com.xenon.store.exceptions.CartNotFoundException;
+import com.xenon.store.exceptions.ProductNotFoundException;
 import com.xenon.store.mappers.CartMapper;
 import com.xenon.store.repositories.CartRepository;
 import com.xenon.store.repositories.ProductRepository;
@@ -111,5 +113,15 @@ public class CartController {
         cart.clear();
         cartRepository.save(cart);
         return ResponseEntity.noContent().build();
+    }
+
+    @ExceptionHandler(CartNotFoundException.class)
+    public ResponseEntity<Map<String,String>> handleCartNotFound(){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error","Cart not found"));
+    }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<Map<String,String>> handleProductNotFound(){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Product not found in the cart"));
     }
 }
