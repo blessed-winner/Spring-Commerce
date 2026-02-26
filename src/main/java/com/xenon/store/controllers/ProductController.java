@@ -3,24 +3,21 @@ package com.xenon.store.controllers;
 import com.xenon.store.dto.ProductDto;
 import com.xenon.store.dto.UpdateProductRequest;
 import com.xenon.store.entities.Category;
-import com.xenon.store.entities.Product;
 import com.xenon.store.mappers.ProductMapper;
 import com.xenon.store.repositories.CategoryRepository;
 import com.xenon.store.repositories.ProductRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
-import org.apache.coyote.Response;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.Set;
-
 @RestController
 @AllArgsConstructor
 @RequestMapping("/products")
+@Tag(name = "Products")
 public class ProductController {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
