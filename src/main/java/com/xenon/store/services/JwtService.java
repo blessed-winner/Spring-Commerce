@@ -14,6 +14,5 @@ public class JwtService {
                 .expiration(new Date(System.currentTimeMillis() + 1000 * tokenExpiration))
                 .signWith(Keys.hmacShaKeyFor("secret".getBytes()))
                 .compact();
-
     }
 }
