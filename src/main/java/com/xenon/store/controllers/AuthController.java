@@ -2,6 +2,9 @@ package com.xenon.store.controllers;
 
 import com.xenon.store.dto.JwtResponse;
 import com.xenon.store.dto.LoginRequest;
+import com.xenon.store.dto.UserDto;
+import com.xenon.store.mappers.UserMapper;
+import com.xenon.store.repositories.UserRepository;
 import com.xenon.store.services.JwtService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -10,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,8 +22,10 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
-@PostMapping("/login")
+    @PostMapping("/login")
 public ResponseEntity<JwtResponse> login(
           @Valid @RequestBody LoginRequest request
 ){
@@ -39,6 +45,22 @@ public ResponseEntity<JwtResponse> login(
 
         var token = authHeader.replace("Bearer ", "");
         return jwtService.validateToken(token);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserDto> me(){
+      var authentication = SecurityContextHolder.getContext().getAuthentication();
+      var email = (String) authentication.getPrincipal();
+
+      var user = userRepository.findByEmail(email).orElse(null);
+      if(user == null){
+          return ResponseEntity.notFound().build();
+      }
+
+      var userDto = userMapper.toDto(user);
+
+      return ResponseEntity.ok(userDto);
+
     }
 
   @ExceptionHandler(BadCredentialsException.class)
