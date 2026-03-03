@@ -48,9 +48,9 @@ public ResponseEntity<JwtResponse> login(
 
     var cookie = new Cookie("refreshToken",refreshToken);
     cookie.setHttpOnly(true);
-    cookie.setPath("/auth/refresh");
+    cookie.setPath("/auth");
     cookie.setMaxAge(jwtConfig.getRefreshTokenExpiration()); //7d
-    cookie.setSecure(true);
+    cookie.setSecure(false);
 
     response.addCookie(cookie);
 
