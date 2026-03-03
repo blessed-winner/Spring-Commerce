@@ -5,12 +5,13 @@ import com.xenon.store.entities.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
 @Service
+@AllArgsConstructor
 public class JwtService {
 
     private JwtConfig jwtConfig;
