@@ -4,6 +4,7 @@ import com.xenon.store.dto.ChangePasswordRequest;
 import com.xenon.store.dto.RegisterUserRequest;
 import com.xenon.store.dto.UpdateUserRequest;
 import com.xenon.store.dto.UserDto;
+import com.xenon.store.entities.Role;
 import com.xenon.store.mappers.UserMapper;
 import com.xenon.store.repositories.UserRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -56,6 +57,7 @@ public class UserController {
         }
          var user = userMapper.toEntity(request);
          user.setPassword(passwordEncoder.encode(user.getPassword()));
+         user.setRole(Role.USER);
          userRepository.save(user);
          var userDto = userMapper.toDto(user);
          var uri = uriBuilder.path("/users/{id}").buildAndExpand(userDto.getId()).toUri();
