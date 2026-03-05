@@ -39,18 +39,6 @@ public class JwtService {
                 .compact();
     }
 
-    public boolean validateToken(String token){
-        try {
-            var claims = getClaims(token);
-
-            return claims.getExpiration().after(new Date());
-        }
-        catch(JwtException ex){
-            return false;
-        }
-
-    }
-
     private Claims getClaims(String token) {
         return Jwts.parser()
                 .verifyWith(jwtConfig.getSecretKey())
@@ -59,11 +47,4 @@ public class JwtService {
                 .getPayload();
     }
 
-    public Long getUserIdFromToken(String token){
-        return Long.valueOf(getClaims(token).getSubject());
-    }
-
-    public Role getRoleFromToken(String token){
-        return Role.valueOf((getClaims(token).get("role",String.class)));
-    }
 }

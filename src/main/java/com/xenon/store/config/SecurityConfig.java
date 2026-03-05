@@ -4,8 +4,6 @@ import com.xenon.store.entities.Role;
 import com.xenon.store.filters.JwtAuthenticationFilter;
 import com.xenon.store.repositories.UserRepository;
 import com.xenon.store.services.JwtService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
