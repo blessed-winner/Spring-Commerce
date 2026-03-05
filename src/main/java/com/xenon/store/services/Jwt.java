@@ -2,6 +2,7 @@ package com.xenon.store.services;
 
 import com.xenon.store.entities.Role;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 
 import javax.crypto.SecretKey;
 import java.security.Key;
@@ -16,8 +17,8 @@ public class Jwt {
         this.secretKey = secretKey;
     }
 
-    public boolean isValid(){
-        return claims.getExpiration().after(new Date());
+    public boolean isExpired(){
+        return claims.getExpiration().before(new Date());
     }
 
     public Long getUserId(String token){
@@ -30,7 +31,6 @@ public class Jwt {
 
     @Override
     public String toString() {
-        // Return a string representation of the token for debugging
-        return "";
+       return Jwts.builder().claims(claims).signWith(secretKey).compact();
     }
 }
