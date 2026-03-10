@@ -66,7 +66,7 @@ public ResponseEntity<JwtResponse> login(
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        var userId = jwt.getUserId(refreshToken);
+        var userId = jwt.getUserId();
         var user = userRepository.findById(userId).orElseThrow();
         var accessToken = jwtService.generateAccessToken(user);
 

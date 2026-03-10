@@ -5,7 +5,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
 import javax.crypto.SecretKey;
-import java.security.Key;
 import java.util.Date;
 
 public class Jwt {
@@ -21,11 +20,11 @@ public class Jwt {
         return claims.getExpiration().before(new Date());
     }
 
-    public Long getUserId(String token){
+    public Long getUserId(){
         return Long.valueOf(claims.getSubject());
     }
 
-    public Role getRole(String token){
+    public Role getRole(){
         return Role.valueOf((claims.get("role",String.class)));
     }
 
