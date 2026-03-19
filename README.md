@@ -1,19 +1,67 @@
-# The Ultimate Spring Boot Course
+# Store API
 
-This repository contains the starter project for Part 2 of my Spring Boot course:
+This is a Spring Boot RESTful API for a simple store application.
 
-[https://codewithmosh.com/p/spring-boot-building-apis](https://codewithmosh.com/p/spring-boot-building-apis)
+## Technologies Used
 
-## About this Repository 
+*   **Java:** 21
+*   **Spring Boot:** 3.4.1
+*   **Database:**
+    *   Spring Data JPA
+    *   MySQL
+    *   Flyway for database migrations
+*   **Security:**
+    *   Spring Security
+    *   JSON Web Tokens (JWT)
+*   **API Documentation:**
+    *   SpringDoc OpenAPI (Swagger)
+*   **Development Tools:**
+    *   Lombok
+    *   MapStruct
+*   **Templating:**
+    *   Thymeleaf
 
-This project is based on the final project from Part 1 of the course, but I’ve cleaned it up and removed unnecessary playground code so we can focus on building APIs in Part 2.
+## Getting Started
 
-You’ll be cloning this repository and coding along with me as we extend the project.
+### Prerequisites
 
-To get started, clone the repository to your local machine:
+*   JDK 21 or later
+*   Maven 3.2+
+*   MySQL server
 
-```sh
-git clone https://github.com/mosh-hamedani/spring-api-starter
+### Configuration
 
-cd spring-api
+1.  **Database:**
+    The database connection properties are configured to be loaded from a `.env` file in the project root. Create a `.env` file with the following properties:
+
+    ```env
+    DB_URL=jdbc:mysql://localhost:3306/store?CreateDatabaseIfNotExist=true
+    DB_USERNAME=root
+    DB_PASSWORD=your_password
+    ```
+
+    Alternatively, you can configure these properties in `src/main/resources/application.properties`.
+
+2.  **Database Migration:**
+    This project uses Flyway to manage database schema changes. The migrations are located in `src/main/resources/db/migration`.
+
+    To apply the migrations, you can run the following Maven command:
+    ```bash
+    mvn flyway:migrate
+    ```
+
+### Running the Application
+
+You can run the application using the Spring Boot Maven plugin:
+
+```bash
+mvn spring-boot:run
 ```
+
+The application will start on `http://localhost:8080`.
+
+## API Documentation
+
+Once the application is running, you can access the Swagger UI for API documentation and testing at:
+
+[http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
