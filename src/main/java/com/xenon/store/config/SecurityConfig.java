@@ -58,9 +58,7 @@ public class SecurityConfig{
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-      //Stateless sessions(token-based auth)
-      //Disable CSRF
-      //Authorize
+
         http
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(AbstractHttpConfigurer::disable)
