@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.codewithmosh</groupId>
-    <artifactId>store</artifactId>
+    <artifactId>luxe</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>store</name>
-    <description>store</description>
+    <name>luxe</name>
+    <description>A premium e-commerce API built with Spring Boot.</description>
     <url/>
     <licenses>
         <license/>
@@ -125,7 +125,7 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>10.15.0</version>
                 <configuration>
-                    <url>jdbc:mysql://localhost:3306/store?CreateDatabaseIfNotExist=true</url>
+                    <url>jdbc:mysql://localhost:3306/luxe?CreateDatabaseIfNotExist=true</url>
                     <user>root</user>
                     <password>HomesweetHome</password>
                     <cleanDisabled>false</cleanDisabled>

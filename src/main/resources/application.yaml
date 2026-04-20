@@ -1,6 +1,6 @@
 spring:
   application:
-    name: store
+    name: luxe
   datasource:
     url: ${DATABASE_URL}
     username: ${DB_USERNAME}
